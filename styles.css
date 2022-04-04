@@ -1,0 +1,134 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+
+*, *::before, *::after{
+    box-sizing: border-box;
+}
+body{
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(180deg, #141F28 0%, #141E2A 50%, #25232A 100%);
+    font-family: Roboto, sans-serif;
+    font-size: 1.2rem;
+    color: white;
+    min-height: 100vh;
+}
+
+.full-height-grow{
+    display: flex;
+    flex-direction: column;
+}
+.brand-logo{
+    display: flex;
+    color: inherit;
+    height: 67px;
+    width: 220px;
+}
+
+.main-nav ul{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.main-nav a{
+    color: inherit;
+    text-decoration: none;
+    padding: 2rem;
+}
+
+.main-nav a:hover{
+    color: #FAFC6B
+}
+
+.main-nav .current{
+    text-decoration: underline;
+    color: #FAFC6B
+}
+.main-header{
+    display: flex;
+    justify-content: space-between ;
+    align-items: center;
+    height: 140px;
+    background-color:  transparent;
+}
+.container{
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.yellow-button{  
+    color:#25232A;
+    background: #FAFC6B;
+    text-decoration: none;
+    padding: .7rem 1.5rem;
+    font-size: 24px;
+    border-radius: 36px;
+    border-style:none;
+}
+.yellow-button:hover{
+    background: #FFFFFF;
+    text-decoration: none;
+    padding: .7rem 1.5rem;
+    font-size: 24px;
+    border-radius: 36px;
+    border-style:hidden;
+    color: #25232A;
+}
+.mainText{
+    width: 500px;
+    height: 200px;
+    font-family: Roboto, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 95px;
+}
+
+.query-title{
+    align-self: center;
+}
+.chart-box{
+    display: flex;
+    background-color:#4646463b;
+    flex-direction: column;
+    flex-grow: 0.7;
+    align-self: center;
+    align-items: center;
+}
+.chart-box .top-section{
+    display: flex;
+    flex-direction: row;
+    width: 1100px;
+    justify-content: space-between ;
+    align-items: center;
+    flex-grow: 0.05;
+    margin:1rem;
+    padding: 0 40px;
+    
+}
+.chart-box .chart{
+    display: flex;
+    background-color:#4646463b;
+    flex-grow: 0.9;
+    width: 1000px;
+    align-self: center;
+}
+.chart-box .bottom-section{
+    display: flex;
+    width: 800px;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
+
+.time-button{
+    background-color: transparent;
+    border-style: none;
+    color: White;
+}
+.time-button:hover{
+    text-decoration: underline;
+    color: #FAFC6B;
+}
