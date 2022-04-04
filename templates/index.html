@@ -12,22 +12,22 @@
     <div class="bg"></div>
     <header class="main-header">
         <a href="/" class="brand-logo">
-            <img src="../static/LogoAndText.png">
+            <img src="{{ url_for('static', filename='LogoAndText.png') }}">
         </a>
         <nav class="main-nav">
             <ul>
-                <li><a href="analyze.html" >Analyze</a></li>
-                <li><a href="compare.html" >Compare</a></li>
-                <li><a href="volume.html" >Volume</a></li>
-                <li><a href="market.html" >Market</a></li>
-                <li><a href="portfolio.html" >Portfolio</a></li>
+                <li><a href="/analyze" >Analyze</a></li>
+                <li><a href="/compare" >Compare</a></li>
+                <li><a href="/volume" >Volume</a></li>
+                <li><a href="/market" >Market</a></li>
+                <li><a href="/portfolio" >Portfolio</a></li>
             </ul>
         </nav>
     </header>
     <section class="home-main-section">
         <div class="call-to-action">
             <h1 class="mainText">Analyze historical crypto-currency data.</h1>
-            <a class="yellow-button" href="about.html">Learn More</a>
+            <a class="yellow-button" href="{{ url_for('static', filename='about.css') }}">Learn More</a>
         </div>
     </section>
     
