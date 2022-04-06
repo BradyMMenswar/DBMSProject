@@ -1,6 +1,7 @@
 *
 instantclient*
 .env
+!*.sql
 !.gitignore
 !*.py
 !*.md
