@@ -1,0 +1,6 @@
+*
+instantclient*
+.env
+!.gitignore
+!*.py
+!*.md
