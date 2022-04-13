@@ -85,7 +85,7 @@ def testQueryOne():
     end = datetime(2018, 1, 14, 0, 0, 0, 0)
     myresult = queryOne(BTC,GEMINI,start, end)
 
-def queryTwo(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate: datetime) -> queryResult:
+def queryFour(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate: datetime) -> queryResult:
 
     SQL = """
         SELECT TRADE_DATE, BUYER_CURRENCY,VOLUME
@@ -109,14 +109,14 @@ def queryTwo(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate:
     return result
 
 
-def testQueryTwo():
+def testQueryFour():
 
     # datetime(year, month, day, hour, minute, second, microsecond)
     start = datetime(2018, 1, 1, 0, 0, 0, 0)
     end = datetime(2018, 1, 14, 0, 0, 0, 0)
-    myresult = queryTwo(BTC,GEMINI,start, end)
+    myresult = queryFour(BTC,GEMINI,start, end)
     print(myresult)
 
 if __name__ == "__main__":
-    testQueryOne()
-    #testConnection()
+    #testQueryFour()
+    testConnection()
