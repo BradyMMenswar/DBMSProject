@@ -94,8 +94,10 @@ body{
     background-color:#4646463b;
     flex-direction: column;
     flex-grow: 0.7;
-    align-self: center;
     align-items: center;
+}
+.chart-box .exchange-section{
+    padding: 1rem;
 }
 .chart-box .top-section{
     display: flex;
@@ -113,6 +115,7 @@ body{
     background-color:#4646463b;
     flex-grow: 0.9;
     width: 1000px;
+    height: 500px;
     align-self: center;
 }
 .chart-box .bottom-section{
@@ -131,4 +134,54 @@ body{
 .time-button:hover{
     text-decoration: underline;
     color: #FAFC6B;
+}
+
+.portfolio{
+    display: flex;
+    background-color:#4646463b;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 2rem;
+    padding: 20px;
+    flex-grow: 0.5;
+    align-items: center;
+}
+
+.portfolio .top-section{
+    align-items: center;
+    text-align: center;
+    flex-grow: 0.05;
+}
+.portfolio .mid-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+.portfolio .crypto-box{
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    background-color:#4646463b;
+    border-color: #FAFC6B;
+    justify-content:space-between;
+    align-items: center;
+    margin:0 rem;
+    padding: 0 40px;
+    border-style: ridge;
+    
+}
+
+.portfolio .crypto-input{
+    width: 100px;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+}
+
+nav .mid-section{
+    height: 500px;
+    width: 90%;
+    overflow: hidden;
+    overflow-y: scroll;
 }

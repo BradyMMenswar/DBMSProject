@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content = "ie=edge">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='analyze.css') }}" rel="stylesheet">
     <title>Crypto Hindsight</title>
 </head>
-<body class="container">
+<body class="container full-height-grow">
     <header class="main-header">
         <a href="/" class="brand-logo">
             <img src="{{ url_for('static', filename='LogoAndText.png') }}">
@@ -22,5 +23,188 @@
             </ul>
         </nav>
     </header>
+    <h1 class="query-title">Query 5: Portfolio Value Over Time</h1>
+    <section class="portfolio-main-section">
+        
+
+        <div class="portfolio">
+            <div class="top-section">
+                <h1>Crypto Portfolio</h1>
+            </div>
+            <nav class="mid-section">
+                <div class="crypto-box">
+                    <h4>BTC</h4>
+                    <div class="crypto-input">
+                        <label>Amount</label>
+                        <input type="text"></input>
+                    </div>
+                    
+                </div>
+                <div class="crypto-box">
+                    <h4>ETH</h4>
+                    <div class="crypto-input">
+                        <label>Amount</label>
+                        <input type="text"></input>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="chart-box">
+            <div class="top-section">
+                <div>
+                    <label>Exchange: </label>
+                    <select>
+                        <option>Bitstamp</option>
+                        <option>Gemini</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Start time:</label>
+                    <input type="datetime-local"></input>
+                </div>
+                
+            </div>
+            <canvas id="canvas" style="background-color: #141F288f"></canvas>
+            <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
+            <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
+            <div class="bottom-section">
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 1>1 Day</button>
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 7>1 Week</button>
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 30>1 Month</button>
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 90>3 Months</button>
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 180>6 Months</button>
+                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 365>1 Year</button>
+                    <button class="time-button">
+                        <label>Custom:</label>
+                        <input type="datetime-local"></input>
+                    </button>
+            </div>
+        </div>
+    </section>
+
+    <!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!--suppress JSUnresolvedLibraryURL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script>
+        var rangemax = 10
+        var rangemin = 0
+        const labels = [1,2,3,4,5,6,7,8,9,10]
+
+        const config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                    label: "test crypto",
+                    fontColor: 'rgb(255,255,255)',
+                    backgroundColor: '#5AA9E6',
+                    borderColor: '#5AA9E6',
+                    data: [0,1,1,2,1,2,3,5,1,4],
+                    fill: false,
+                    },
+                    {
+                    label: "test crypto 2",
+                    fontColor: 'rgb(255,255,255)',
+                    backgroundColor: '#FAFC6B',
+                    borderColor: '#FAFC6B',
+                    data: [5,4,3,3,3,2,1,0,2,0],
+                    fill: false,
+                    }
+                ],
+            },
+            options: {
+                legend: {
+                    labels: {
+                        fontColor: 'rgb(255,255,255)',
+                    }
+                },
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Test Crypto Line Chart',
+                    fontColor: 'rgb(255,255,255)'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    color: 'rgb(0,0,0)',
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time',
+
+                            fontColor: 'rgb(255,255,255)'
+                        },
+                        gridLines: {
+                            color: 'rgb(255,255,255)'
+                        },
+                        ticks: {
+                            fontColor: 'rgb(255,255,255)'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value',
+
+                            fontColor: 'rgb(255,255,255)'
+                        },
+                        gridLines: {
+                            color: 'rgb(255,255,255)'
+                        },
+                        ticks: {
+                            fontColor: 'rgb(255,255,255)'
+                        }
+                    }]
+                }
+            }
+        };
+
+        const context = document.getElementById('canvas').getContext('2d');
+
+        const lineChart = new Chart(context, config);
+
+        const source = new EventSource("/chart-data");
+
+        source.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+            if (config.data.labels.length === 20) {
+                config.data.labels.shift();
+                config.data.datasets[0].data.shift();
+            }
+            config.data.labels.push(data.time);
+            config.data.datasets[0].data.push(data.value);
+            lineChart.update();
+        }
+        function updateRangeMax(mvalue){
+            console.log(mvalue.value)
+            const range = labels.slice(rangemin,mvalue.value);
+            lineChart.config.data.labels = range;
+            rangemax = mvalue.value;
+            lineChart.update();
+        }
+        function updateRangeMin(mvalue){
+            console.log(mvalue.value)
+            const range = labels.slice(mvalue.value-1,rangemax);
+            lineChart.config.data.labels = range;
+            rangemin = mvalue.value-1;
+            lineChart.update();
+        }
+
+
+
+</script>
 </body>
 </html>

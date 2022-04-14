@@ -3,5 +3,35 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+    align-self: center;
+    flex-grow: 1;
+}
+.portfolio-main-section{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    flex-grow: 1;
+}
+.compare-main-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+.volume-main-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+.market-main-section{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    align-self: center;
     flex-grow: 1;
 }

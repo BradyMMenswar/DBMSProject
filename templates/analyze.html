@@ -24,33 +24,40 @@
             </ul>
         </nav>
     </header>
+    <h1 class="query-title">Query 1: Percent Change in Crypto Price Over Time</h1>
     <section class="analyze-main-section">
-        <h2 class="query-title">Query 1: Daily Percentage Change in Price for a Given Crypto</h1>
        <div class="chart-box">
+           <div class="exchange-section">
+               <label>Exchange: </label>
+               <select>
+                   <option>Bitstamp</option>
+                   <option>Gemini</option>
+               </select>
+           </div>
            <div class="top-section">
-                <select>
-                    <option>BTC/USD</option>
-                    <option>ETH/USD</option>
-                    <option>LTC/USD</option>
-                </select>
+               <div>
+                    <label>Crypto:</label>
+                    <select>
+                        <option>BTC/USD</option>
+                        <option>ETH/USD</option>
+                    </select>
+               </div>
                 <div>
                     <label>Start time:</label>
                     <input type="datetime-local"></input>
                 </div>
                
            </div>
-           <div class="chart">
-               <canvas id="canvas" style="background-color: black"></canvas>
-               <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
-               <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
-           </div>
+            <canvas id="canvas" style="background-color: #141F288f"></canvas>
+            <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
+            <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
            <div class="bottom-section">
                 <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 1>1 Day</button>
-                <button class="time-button">1 Week</button>
-                <button class="time-button">1 Month</button>
-                <button class="time-button">3 Months</button>
-                <button class="time-button">6 Months</button>
-                <button class="time-button">1 Year</button>
+                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 7>1 Week</button>
+                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 30>1 Month</button>
+                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 90>3 Months</button>
+                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 180>6 Months</button>
+                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 365>1 Year</button>
                 <button class="time-button">
                     <label>Custom:</label>
                     <input type="datetime-local"></input>
@@ -77,16 +84,16 @@
                     {
                     label: "test crypto",
                     fontColor: 'rgb(255,255,255)',
-                    backgroundColor: '#04AA6D',
-                    borderColor: '#04AA6D',
+                    backgroundColor: '#5AA9E6',
+                    borderColor: '#5AA9E6',
                     data: [0,1,1,2,1,2,3,5,1,4],
                     fill: false,
                     },
                     {
                     label: "test crypto 2",
                     fontColor: 'rgb(255,255,255)',
-                    backgroundColor: 'rgb(255,0,0)',
-                    borderColor: 'rgb(255,0,0)',
+                    backgroundColor: '#FAFC6B',
+                    borderColor: '#FAFC6B',
                     data: [5,4,3,3,3,2,1,0,2,0],
                     fill: false,
                     }
