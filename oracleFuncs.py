@@ -21,6 +21,12 @@ class queryResult():
     B = list()
     C = list()
 
+    def __init__(self):
+        self.A = []
+        self.B = []
+        self.C = []
+
+
 def getConnection() -> cx_Oracle.Connection: 
     # Get config info from .env file
     USER = config('myuser')
@@ -55,6 +61,7 @@ def testConnection():
 
 def queryOne(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate: datetime) -> queryResult:
 
+    DEBUG = config('DEBUG', default=False, cast=bool)
     SQL = """
     SELECT trade_date,open,
        - 100.0 * (1 - LEAD(open) OVER (ORDER BY trade_date) / open) AS Percent_Change
@@ -75,6 +82,9 @@ def queryOne(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate:
                 result.C.append(row[2])
                 #print(row)
 
+            cursorRowCount=cursor.rowcount
+    if DEBUG:
+        print("### buyerCurrencyID: {} exchangeID: {} startDate: {} endDate: {} RowCount: {} CursorRowCount: {} ".format(buyerCurrencyID,exchangeID,startDate,endDate,len(result.A),cursorRowCount ))
     return result
 
 
