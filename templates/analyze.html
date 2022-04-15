@@ -24,27 +24,27 @@
             </ul>
         </nav>
     </header>
-    <h1 class="query-title">Query 1: Percent Change in Crypto Price Over Time</h1>
+    <h2 class="query-title">Query 1: Percent Change in Crypto Price Over Time</h2>
     <section class="analyze-main-section">
-       <div class="chart-box">
+       <form action = "http://localhost:5000/analyze" method = "POST" class="chart-box">
            <div class="exchange-section">
                <label>Exchange: </label>
-               <select>
-                   <option value="2">Bitstamp</option>
+               <select class="drop-down" name="exchange-data">
                    <option value="1">Gemini</option>
+                   <option value="2">Bitstamp</option>
                </select>
            </div>
            <div class="top-section">
                <div>
                     <label>Crypto:</label>
-                    <select>
+                    <select class="drop-down" name="crypto-data">
                         <option value="1">BTC/USD</option>
                         <option value="2">ETH/USD</option>
                     </select>
                </div>
                 <div>
                     <label>Start time:</label>
-                    <input type="datetime-local"></input>
+                    <input type="datetime-local" name="start-data"></input>
                 </div>
                
            </div>
@@ -52,20 +52,21 @@
             <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
             <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
            <div class="bottom-section">
-               <form action = "http://localhost:5000/analyze" method = "POST">
+               <!-- <form action = "http://localhost:5000/analyze" method = "POST">
                 <input type="submit" class="time-button" id="mvalue" name = "int1" value = "1 Day"></inputbutton>
                 <button class="time-button" id="mvalue" name="int2" value = 7>1 Week</button>
                 <button class="time-button" id="mvalue" name="int3" value = 30>1 Month</button>
                 <button class="time-button" id="mvalue" name="int4" value = 90>3 Months</button>
                 <button class="time-button" id="mvalue" name="int5" value = 180>6 Months</button>
-                <button class="time-button" id="mvalue" name="int6" value = 365>1 Year</button>
-                <button class="time-button">
-                    <label>Custom:</label>
-                    <input type="datetime-local"></input>
-                </button>
-               </form>
+                <button class="time-button" id="mvalue" name="int6" value = 365>1 Year</button> -->
+                <div class="time-button">
+                    <label>End time: </label>
+                    <input type="datetime-local" name="end-data"></input>
+                </div>
+               <!-- </form> -->
+               <input type="submit" class="submit-form" value="Update Chart"></input>
            </div>
-       </div>
+        </form>
     </section>
     <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
@@ -73,30 +74,33 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script type="text/javascript">
         var rangemax = 10
         var rangemin = 0
-        const labels = {{ value }}
+        const labels = [1,2]
+        var valueJSON = {{value|tojson}}
+        console.log(valueJSON)
+        var cryptoName = "Test";
+
+        var minTime = valueJSON[2]
+        var maxTime = valueJSON[3]
+        if(valueJSON[1] == 1) cryptoName = "Bitcoin (BTC)"
+        else cryptoName = "Ethereum (ETH)"
 
         const config = {
             type: 'line',
             data: {
-                labels: labels,
+                //labels: labels,
                 datasets: [
                     {
-                    label: "test crypto",
-                    fontColor: 'rgb(255,255,255)',
-                    backgroundColor: '#5AA9E6',
-                    borderColor: '#5AA9E6',
-                    data: [0,1,1,2,1,2,3,5,1,4],
-                    fill: false,
-                    },
-                    {
-                    label: "test crypto 2",
+                    label: cryptoName,
                     fontColor: 'rgb(255,255,255)',
                     backgroundColor: '#FAFC6B',
                     borderColor: '#FAFC6B',
-                    data: [5,4,3,3,3,2,1,0,2,0],
+                    data: [
+                    ],
                     fill: false,
                     }
                 ],
@@ -110,7 +114,7 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Test Crypto Line Chart',
+                    text: cryptoName + ' from ' + valueJSON[2] + ' to ' + valueJSON[3],
                     fontColor: 'rgb(255,255,255)'
                 },
                 tooltips: {
@@ -125,6 +129,12 @@
                     color: 'rgb(0,0,0)',
                     xAxes: [{
                         display: true,
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            min: minTime,
+                            max: maxTime
+                        },
                         scaleLabel: {
                             display: true,
                             labelString: 'Time',
@@ -156,38 +166,63 @@
                 }
             }
         };
+        
+        
 
         const context = document.getElementById('canvas').getContext('2d');
 
         const lineChart = new Chart(context, config);
-
+        lineChart.update();
         const source = new EventSource("/chart-data");
 
-        source.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            if (config.data.labels.length === 20) {
-                config.data.labels.shift();
-                config.data.datasets[0].data.shift();
-            }
-            config.data.labels.push(data.time);
-            config.data.datasets[0].data.push(data.value);
-            lineChart.update();
-        }
-        function updateRangeMax(mvalue){
-            console.log(mvalue.value)
-            const range = labels.slice(rangemin,mvalue.value);
-            lineChart.config.data.labels = range;
-            rangemax = mvalue.value;
-            lineChart.update();
+        // source.onmessage = function (event) {
+        //     const data = JSON.parse(event.data);
+        //     if (config.data.labels.length === 20) {
+        //         config.data.labels.shift();
+        //         config.data.datasets[0].data.shift();
+        //     }
+        //     config.data.labels.push(data.time);
+        //     config.data.datasets[0].data.push(data.value);
+        //     lineChart.update();
+        // }
+        // function updateRangeMax(mvalue){
+        //     console.log(mvalue.value)
+        //     const range = labels.slice(rangemin,mvalue.value);
+        //     lineChart.config.data.labels = range;
+        //     rangemax = mvalue.value;
+        //     lineChart.update();
 
+        // }
+        // function updateRangeMin(mvalue){
+        //     console.log(mvalue.value)
+        //     const range = labels.slice(mvalue.value-1,rangemax);
+        //     lineChart.config.data.labels = range;
+        //     rangemin = mvalue.value-1;
+        //     lineChart.update();
+        // }
+        function addData(chart, data) {
+
+            
+            chart.config.data.datasets.forEach((dataset) => {
+                dataset.data.push(data);
+            });
+            chart.update();
         }
-        function updateRangeMin(mvalue){
-            console.log(mvalue.value)
-            const range = labels.slice(mvalue.value-1,rangemax);
-            lineChart.config.data.labels = range;
-            rangemin = mvalue.value-1;
-            lineChart.update();
+        function removeData(chart) {
+            chart.config.data.datasets.forEach((dataset) => {
+
+                dataset.data.pop();
+                
+            });
+            chart.update();
         }
+
+        removeData(lineChart);
+        for(let i = 0;i<valueJSON[4].length; i++)
+        {
+            addData(lineChart, {x: valueJSON[4][i], y: valueJSON[5][i]}) 
+        }
+        console.log(lineChart.data.datasets[0])
 
 
 

@@ -88,16 +88,19 @@ body{
 
 .query-title{
     align-self: center;
+    display: flex;
+    margin: 0;
+    padding: 0;
 }
 .chart-box{
     display: flex;
     background-color:#4646463b;
     flex-direction: column;
-    flex-grow: 0.7;
+    flex-grow: 0.3;
     align-items: center;
 }
 .chart-box .exchange-section{
-    padding: 1rem;
+    padding: 0.2rem;
 }
 .chart-box .top-section{
     display: flex;
@@ -184,4 +187,24 @@ nav .mid-section{
     width: 90%;
     overflow: hidden;
     overflow-y: scroll;
+}
+
+.submit-form{
+    color:#25232A;
+    background: #FAFC6B;
+    text-decoration: none;
+    padding: .7rem 1.5rem;
+    font-size: 20px;
+    border-radius: 36px;
+    border-style:none;
+}
+
+.submit-form:hover{
+    background: #FFFFFF;
+    text-decoration: none;
+    padding: .7rem 1.5rem;
+    font-size: 20px;
+    border-radius: 36px;
+    border-style:hidden;
+    color: #25232A;
 }
