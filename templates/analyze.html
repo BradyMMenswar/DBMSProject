@@ -52,16 +52,18 @@
             <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
             <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
            <div class="bottom-section">
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 1>1 Day</button>
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 7>1 Week</button>
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 30>1 Month</button>
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 90>3 Months</button>
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 180>6 Months</button>
-                <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 365>1 Year</button>
+               <form action = "http://localhost:5000/analyze" method = "POST">
+                <input type="submit" class="time-button" id="mvalue" name = "int1" value = "1 Day"></inputbutton>
+                <button class="time-button" id="mvalue" name="int2" value = 7>1 Week</button>
+                <button class="time-button" id="mvalue" name="int3" value = 30>1 Month</button>
+                <button class="time-button" id="mvalue" name="int4" value = 90>3 Months</button>
+                <button class="time-button" id="mvalue" name="int5" value = 180>6 Months</button>
+                <button class="time-button" id="mvalue" name="int6" value = 365>1 Year</button>
                 <button class="time-button">
                     <label>Custom:</label>
                     <input type="datetime-local"></input>
                 </button>
+               </form>
            </div>
        </div>
     </section>
@@ -71,10 +73,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<script>
+<script type="text/javascript">
         var rangemax = 10
         var rangemin = 0
-        const labels = [1,2,3,4,5,6,7,8,9,10]
+        const labels = {{ value }}
 
         const config = {
             type: 'line',
@@ -177,6 +179,7 @@
             lineChart.config.data.labels = range;
             rangemax = mvalue.value;
             lineChart.update();
+
         }
         function updateRangeMin(mvalue){
             console.log(mvalue.value)
@@ -189,6 +192,5 @@
 
 
 </script>
-    
 </body>
 </html>
