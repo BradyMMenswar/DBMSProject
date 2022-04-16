@@ -120,7 +120,7 @@ def queryThree(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDat
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
-            resultSet = cursor.execute(SQL,(exchangeID,exchangeID,startDate,endDate))
+            resultSet = cursor.execute(SQL,(buyerCurrencyID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
 
