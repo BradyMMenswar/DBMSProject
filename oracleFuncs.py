@@ -4,6 +4,7 @@ import os
 import sys 
 from decouple import config
 from re import search
+import time
 
 # Numeric Constants for Currency Types 
 BTC=1
@@ -75,6 +76,8 @@ def queryOne(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate:
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
+            cursor.prefetchrows = 10000
+            cursor.arraysize = 10000
             resultSet = cursor.execute(SQL,(buyerCurrencyID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
@@ -121,6 +124,8 @@ def queryTwo(exchangeID: int, startDate: datetime, endDate: datetime, ethCount: 
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
+            cursor.prefetchrows = 10000
+            cursor.arraysize = 10000
             resultSet = cursor.execute(SQL,(exchangeID,exchangeID,ethCount,btcCount,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
@@ -165,6 +170,8 @@ def queryThree(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDat
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
+            cursor.prefetchrows = 10000
+            cursor.arraysize = 10000
             resultSet = cursor.execute(SQL,(buyerCurrencyID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
@@ -204,6 +211,8 @@ def queryFour(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDate
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
+            cursor.prefetchrows = 10000
+            cursor.arraysize = 10000
             resultSet = cursor.execute(SQL,(buyerCurrencyID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
@@ -247,6 +256,8 @@ def queryFive(exchangeID: int, startDate: datetime, endDate: datetime) -> queryR
 
     with getConnection() as connection:
         with connection.cursor() as cursor:
+            cursor.prefetchrows = 10000
+            cursor.arraysize = 10000
             resultSet = cursor.execute(SQL,(exchangeID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
@@ -267,7 +278,54 @@ def testQueryFive():
     myresult = queryFive(GEMINI,start,end)
     print(myresult)
 
+def benchmarkQueries(start: datetime, end: datetime):
+
+    
+    print("Start: {}".format(start))
+    print("End: {}".format(end))
+    before = time.perf_counter_ns()
+    myresult = queryOne(BTC,GEMINI,start, end)
+    after = time.perf_counter_ns()
+    duration = (after - before)/1000000
+    print("Query One Time: {} ms".format(duration))
+
+    before = time.perf_counter_ns()
+    myresult = queryTwo(GEMINI,start, end,8.5,20.0)
+    after = time.perf_counter_ns()
+    duration = (after - before)/1000000
+    print("Query Two Time: {} ms".format(duration))
+
+    before = time.perf_counter_ns()
+    myresult = queryThree(ETH,GEMINI,start, end)
+    after = time.perf_counter_ns()
+    duration = (after - before)/1000000
+    print("Query Three Time: {} ms".format(duration))
+
+    before = time.perf_counter_ns()
+    myresult = queryFour(BTC,GEMINI,start, end)
+    after = time.perf_counter_ns()
+    duration = (after - before)/1000000
+    print("Query Four Time: {} ms".format(duration))
+
+    before = time.perf_counter_ns()
+    myresult = queryFive(GEMINI,start,end)
+    after = time.perf_counter_ns()
+    duration = (after - before)/1000000
+    print("Query Five Time: {} ms".format(duration))
+
+
+def perfTest1D():
+    start = datetime(2018, 2, 16, 0, 0, 0, 0)
+    end = datetime(2018, 2, 17, 0, 0, 0, 0)
+    benchmarkQueries(start,end)
+
+def perfTest1M():
+    start = datetime(2018, 2, 16, 0, 0, 0, 0)
+    end = datetime(2018, 3, 16, 0, 0, 0, 0)
+    benchmarkQueries(start,end)
+
 if __name__ == "__main__":
+    
     #testQueryTwo()
     #testQueryFour()
     #testQueryThree()
