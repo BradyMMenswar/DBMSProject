@@ -225,5 +225,5 @@ def testQueryFive():
 if __name__ == "__main__":
     #testQueryFour()
     #testQueryThree()
-    testQueryFive()
-    #testConnection()
+    #testQueryFive()
+    testConnection()
