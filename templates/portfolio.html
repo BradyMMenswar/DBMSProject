@@ -25,93 +25,84 @@
     </header>
     <h2 class="query-title">Query 2: Portfolio Value Over Time</h2>
     <section class="portfolio-main-section">
-        
-
-        <div class="portfolio">
-            <div class="top-section">
-                <h1>Crypto Portfolio</h1>
+       <form action = "http://localhost:5000/portfolio" method = "POST" class="portfolio-form">
+            <div class="portfolio">
+                <div class="top-section">
+                    <h1>Crypto Portfolio</h1>
+                </div>
+                <div class="mid-section">
+                    <div class="crypto-box">
+                        <h4>BTC</h4>
+                        <div class="crypto-input">
+                            <label>Amount</label>
+                            <input type="text" name="BTCAmount"></input>
+                        </div>
+                        
+                    </div>
+                    <div class="crypto-box">
+                        <h4>ETH</h4>
+                        <div class="crypto-input">
+                            <label>Amount</label>
+                            <input type="text" name="ETHAmount"></input>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <nav class="mid-section">
-                <div class="crypto-box">
-                    <h4>BTC</h4>
-                    <div class="crypto-input">
-                        <label>Amount</label>
-                        <input type="text"></input>
+            <div class="chart-box">
+                <div class="exchange-section">
+                <label>Exchange: </label>
+                <select class="drop-down" name="exchange-data">
+                    <option value="1">Gemini</option>
+                    <option value="2">Bitstamp</option>
+                </select>
+                </div>
+                <div class="top-section">
+                    <div>
+                        <label>Start time:</label>
+                        <input type="datetime-local" name="start-data"></input>
+                        <label>End time: </label>
+                        <input type="datetime-local" name="end-data"></input>
                     </div>
-                    
-                </div>
-                <div class="crypto-box">
-                    <h4>ETH</h4>
-                    <div class="crypto-input">
-                        <label>Amount</label>
-                        <input type="text"></input>
-                    </div>
-                </div>
-            </nav>
-        </div>
-        <div class="chart-box">
-            <div class="top-section">
-                <div>
-                    <label>Exchange: </label>
-                    <select>
-                        <option>Bitstamp</option>
-                        <option>Gemini</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Start time:</label>
-                    <input type="datetime-local"></input>
-                </div>
                 
+                </div>
+                <canvas id="canvas" style="background-color: #141F288f"></canvas>
+                <div class="bottom-section">
+                    <input type="submit" class="submit-form" value="Update Chart"></input>
+                </div>
             </div>
-            <canvas id="canvas" style="background-color: #141F288f"></canvas>
-            <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
-            <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
-            <div class="bottom-section">
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 1>1 Day</button>
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 7>1 Week</button>
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 30>1 Month</button>
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 90>3 Months</button>
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 180>6 Months</button>
-                    <button class="time-button" id="mvalue" onclick="updateRangeMax(this)" value = 365>1 Year</button>
-                    <button class="time-button">
-                        <label>Custom:</label>
-                        <input type="datetime-local"></input>
-                    </button>
-            </div>
-        </div>
+        </form>
     </section>
-
     <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
 <!--suppress JSUnresolvedLibraryURL -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
-<script>
+
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script type="text/javascript">
         var rangemax = 10
         var rangemin = 0
-        const labels = [1,2,3,4,5,6,7,8,9,10]
+        const labels = [1,2]
+        var valueJSON = {{value|tojson}}
+        console.log(valueJSON)
+        var cryptoName = "Test";
+
+        var minTime = valueJSON[1]
+        var maxTime = valueJSON[2]
 
         const config = {
             type: 'line',
             data: {
-                labels: labels,
+                //labels: labels,
                 datasets: [
                     {
-                    label: "test crypto",
-                    fontColor: 'rgb(255,255,255)',
-                    backgroundColor: '#5AA9E6',
-                    borderColor: '#5AA9E6',
-                    data: [0,1,1,2,1,2,3,5,1,4],
-                    fill: false,
-                    },
-                    {
-                    label: "test crypto 2",
+                    label: 'Portfolio',
                     fontColor: 'rgb(255,255,255)',
                     backgroundColor: '#FAFC6B',
                     borderColor: '#FAFC6B',
-                    data: [5,4,3,3,3,2,1,0,2,0],
+                    data: [
+                    ],
                     fill: false,
                     }
                 ],
@@ -125,7 +116,7 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: 'Test Crypto Line Chart',
+                    text: cryptoName + ' from ' + valueJSON[1] + ' to ' + valueJSON[2],
                     fontColor: 'rgb(255,255,255)'
                 },
                 tooltips: {
@@ -140,6 +131,12 @@
                     color: 'rgb(0,0,0)',
                     xAxes: [{
                         display: true,
+                        type: 'time',
+                        time: {
+                            unit: 'day',
+                            min: minTime,
+                            max: maxTime
+                        },
                         scaleLabel: {
                             display: true,
                             labelString: 'Time',
@@ -171,37 +168,63 @@
                 }
             }
         };
+        
+        
 
         const context = document.getElementById('canvas').getContext('2d');
 
         const lineChart = new Chart(context, config);
-
+        lineChart.update();
         const source = new EventSource("/chart-data");
 
-        source.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-            if (config.data.labels.length === 20) {
-                config.data.labels.shift();
-                config.data.datasets[0].data.shift();
-            }
-            config.data.labels.push(data.time);
-            config.data.datasets[0].data.push(data.value);
-            lineChart.update();
+        // source.onmessage = function (event) {
+        //     const data = JSON.parse(event.data);
+        //     if (config.data.labels.length === 20) {
+        //         config.data.labels.shift();
+        //         config.data.datasets[0].data.shift();
+        //     }
+        //     config.data.labels.push(data.time);
+        //     config.data.datasets[0].data.push(data.value);
+        //     lineChart.update();
+        // }
+        // function updateRangeMax(mvalue){
+        //     console.log(mvalue.value)
+        //     const range = labels.slice(rangemin,mvalue.value);
+        //     lineChart.config.data.labels = range;
+        //     rangemax = mvalue.value;
+        //     lineChart.update();
+
+        // }
+        // function updateRangeMin(mvalue){
+        //     console.log(mvalue.value)
+        //     const range = labels.slice(mvalue.value-1,rangemax);
+        //     lineChart.config.data.labels = range;
+        //     rangemin = mvalue.value-1;
+        //     lineChart.update();
+        // }
+        function addData(chart, data) {
+
+            
+            chart.config.data.datasets.forEach((dataset) => {
+                dataset.data.push(data);
+            });
+            chart.update();
         }
-        function updateRangeMax(mvalue){
-            console.log(mvalue.value)
-            const range = labels.slice(rangemin,mvalue.value);
-            lineChart.config.data.labels = range;
-            rangemax = mvalue.value;
-            lineChart.update();
+        function removeData(chart) {
+            chart.config.data.datasets.forEach((dataset) => {
+
+                dataset.data.pop();
+                
+            });
+            chart.update();
         }
-        function updateRangeMin(mvalue){
-            console.log(mvalue.value)
-            const range = labels.slice(mvalue.value-1,rangemax);
-            lineChart.config.data.labels = range;
-            rangemin = mvalue.value-1;
-            lineChart.update();
+
+        removeData(lineChart);
+        for(let i = 0;i<valueJSON[5].length; i++)
+        {
+            addData(lineChart, {x: valueJSON[5][i], y: valueJSON[6][i]}) 
         }
+        console.log(lineChart.data.datasets[0])
 
 
 
