@@ -324,8 +324,27 @@ def perfTest1M():
     end = datetime(2018, 3, 16, 0, 0, 0, 0)
     benchmarkQueries(start,end)
 
+def getTotalTupleCount() -> int:
+
+    SQL = """
+    select 
+    (select  count(*) from kerekovskik.ohlc_data_point) +
+    (select  count(*) from kerekovskik.currency) + 
+    (select  count(*) from kerekovskik.exchange) as total
+    from dual
+    """
+
+    total : int = 0
+    with getConnection() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(SQL)
+            row = cursor.fetchone()
+            total = row[0]
+
+    return total
+
 if __name__ == "__main__":
-    
+    #getTotalTupleCount()
     #testQueryTwo()
     #testQueryFour()
     #testQueryThree()
