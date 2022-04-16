@@ -177,7 +177,53 @@ def testQueryFour():
     myresult = queryFour(BTC,GEMINI,start, end)
     print(myresult)
 
+def queryFive(exchangeID: int, startDate: datetime, endDate: datetime) -> queryResult:
+    DEBUG = config('DEBUG', default=False, cast=bool)
+    SQL = """
+        WITH
+        btcprice (TRADE_DATE, Bitcoin_Price) AS
+        (SELECT TRADE_DATE,OPEN AS Bitcoin_Price
+        FROM  KEREKOVSKIK.OHLC_DATA_POINT
+        WHERE BUYER_CURRENCY = 1 AND EXCHANGE_ID = :1
+        ORDER BY TRADE_DATE ASC),
+        ethprice (TRADE_DATE, Ethereum_Price) AS
+        (SELECT TRADE_DATE,OPEN AS Ethereum_Price
+        FROM  KEREKOVSKIK.OHLC_DATA_POINT
+        WHERE BUYER_CURRENCY = 2 AND EXCHANGE_ID = :2
+        ORDER BY TRADE_DATE ASC)
+        SELECT btcprice.trade_date, Ethereum_Price,Bitcoin_Price
+        FROM btcprice,ethprice
+        WHERE btcprice.trade_date = ethprice.trade_date
+        AND btcprice.trade_date between :3 and :4
+        ORDER BY 1 ASC
+    """
+
+    result: queryResult = queryResult()
+
+    with getConnection() as connection:
+        with connection.cursor() as cursor:
+            resultSet = cursor.execute(SQL,(exchangeID,exchangeID,startDate,endDate))
+            for row in resultSet:
+                result.A.append(row[0])
+                result.B.append(row[1])
+                result.C.append(row[2])
+
+            cursorRowCount=cursor.rowcount
+    if DEBUG:
+        print("### exchangeID: {} startDate: {} endDate: {} RowCount: {} CursorRowCount: {} ".format(exchangeID,startDate,endDate,len(result.A),cursorRowCount ))
+
+    return result
+
+def testQueryFive():
+
+    # datetime(year, month, day, hour, minute, second, microsecond)
+    start = datetime(2018, 2, 16, 0, 0, 0, 0)
+    end = datetime(2018, 2, 17, 0, 0, 0, 0)
+    myresult = queryFive(GEMINI,start,end)
+    print(myresult)
+
 if __name__ == "__main__":
     #testQueryFour()
     #testQueryThree()
-    testConnection()
+    testQueryFive()
+    #testConnection()
