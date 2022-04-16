@@ -123,9 +123,6 @@ def queryThree(buyerCurrencyID:int, exchangeID: int, startDate: datetime, endDat
             resultSet = cursor.execute(SQL,(buyerCurrencyID,exchangeID,startDate,endDate))
             for row in resultSet:
                 result.A.append(row[0])
-
-
-                
                 if buyerCurrencyID == 1: #Return Bitcoin_Price if buyerCurrencyID==1 (BTC)
                     result.B.append(row[1])
                 else: # Return Ethereum_Price if buyerCurrencyID==2 (ETH)

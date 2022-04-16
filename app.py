@@ -89,7 +89,7 @@ def market() -> str:
             chartForm[4] = []
             chartForm[5] = []
             chartForm[6] = []
-            query = queryThree(request.form.get('crypto-data'), request.form.get('exchange-data'), datetime.strptime(request.form.get('start-data'), '%Y-%m-%dT%H:%M'), datetime.strptime(request.form.get('end-data'), '%Y-%m-%dT%H:%M'))
+            query = queryThree(int(request.form.get('crypto-data')), int(request.form.get('exchange-data')), datetime.strptime(request.form.get('start-data'), '%Y-%m-%dT%H:%M'), datetime.strptime(request.form.get('end-data'), '%Y-%m-%dT%H:%M'))
             queryA = query.A
             queryALength = len(queryA)
             scaleFactor = math.floor(queryALength / 100)
@@ -131,7 +131,7 @@ def market() -> str:
         # if request.form.get('int6'):
         #     a=request.form.get('int6')
         #     return render_template("analyze.html", value = [1,2,3,4,5,6,7,8,9,10])
-        query = 0;
+        query = 0
         return render_template("market.html", value = [1,2,3,4,5,6,7,8,9,10])
     else:
         a=request.args.get('test')
