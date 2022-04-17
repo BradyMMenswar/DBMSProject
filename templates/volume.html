@@ -45,24 +45,14 @@
                      <label>Start time:</label>
                      <input type="datetime-local" name="start-data"></input>
                  </div>
+                 <div>
+                    <label>End time: </label>
+                    <input type="datetime-local" name="end-data"></input>
+                </div>
                 
             </div>
              <canvas id="canvas" style="background-color: #141F288f"></canvas>
-             <!-- original buttons for reference <input id="mvalue" onkeyup="updateRangeMin(this)" type = "number" value = 1 min=1 max=10>
-             <input id="mvalue" onkeyup="updateRangeMax(this)" type = "number" value = 10 min=1 max=10> -->
             <div class="bottom-section">
-                <!-- <form action = "http://localhost:5000/analyze" method = "POST">
-                 <input type="submit" class="time-button" id="mvalue" name = "int1" value = "1 Day"></inputbutton>
-                 <button class="time-button" id="mvalue" name="int2" value = 7>1 Week</button>
-                 <button class="time-button" id="mvalue" name="int3" value = 30>1 Month</button>
-                 <button class="time-button" id="mvalue" name="int4" value = 90>3 Months</button>
-                 <button class="time-button" id="mvalue" name="int5" value = 180>6 Months</button>
-                 <button class="time-button" id="mvalue" name="int6" value = 365>1 Year</button> -->
-                 <div class="time-button">
-                     <label>End time: </label>
-                     <input type="datetime-local" name="end-data"></input>
-                 </div>
-                <!-- </form> -->
                 <input type="submit" class="submit-form" value="Update Chart"></input>
             </div>
          </form>
@@ -130,7 +120,7 @@
                          display: true,
                          type: 'time',
                          time: {
-                             unit: 'day',
+                             unit: 'month',
                              min: minTime,
                              max: maxTime
                          },
@@ -173,32 +163,6 @@
          const lineChart = new Chart(context, config);
          lineChart.update();
          const source = new EventSource("/chart-data");
- 
-         // source.onmessage = function (event) {
-         //     const data = JSON.parse(event.data);
-         //     if (config.data.labels.length === 20) {
-         //         config.data.labels.shift();
-         //         config.data.datasets[0].data.shift();
-         //     }
-         //     config.data.labels.push(data.time);
-         //     config.data.datasets[0].data.push(data.value);
-         //     lineChart.update();
-         // }
-         // function updateRangeMax(mvalue){
-         //     console.log(mvalue.value)
-         //     const range = labels.slice(rangemin,mvalue.value);
-         //     lineChart.config.data.labels = range;
-         //     rangemax = mvalue.value;
-         //     lineChart.update();
- 
-         // }
-         // function updateRangeMin(mvalue){
-         //     console.log(mvalue.value)
-         //     const range = labels.slice(mvalue.value-1,rangemax);
-         //     lineChart.config.data.labels = range;
-         //     rangemin = mvalue.value-1;
-         //     lineChart.update();
-         // }
          function addData(chart, data) {
  
              

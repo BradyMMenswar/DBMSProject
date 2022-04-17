@@ -113,6 +113,12 @@ body{
     padding: 0 40px;
     
 }
+.port-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 100%;
+}
 .chart-box .chart{
     display: flex;
     background-color:#4646463b;
@@ -124,7 +130,7 @@ body{
 .chart-box .bottom-section{
     display: flex;
     width: 800px;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     align-self: center;
     margin: 20px;
@@ -206,4 +212,50 @@ body{
 .portfolio-form{
     display: flex;
     flex-direction: row;
+}
+.about-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.text-area
+{
+    font-size:  24px;
+    line-height: 40px;
+    display: flex; 
+    align-self: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 45%;
+    height: 600px;
+    background-color: #4646463b;
+    padding: 40px;
+    margin: 40px;
+}
+.query-text{
+    color:#FAFC6B;
+    font-size: 28px;
+}
+.tuple-count{
+    display: flex;justify-content:  center;
+    align-self: center;
+    align-items: center;
+    padding: 40px;
+    margin: 0.1rem;
+    background-color: #4646463b;
+    width: 40%;
+
+    gap: 10px;
+    height: 150px;
+}
+.num-tuples{
+    color:#FAFC6B;
+    font-size: 32px;
+
+}
+
+
+.contributors{
+    align-self: center;
+    color:#FAFC6B;
 }

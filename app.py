@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime
-from oracleFuncs import queryOne, queryFour, queryThree, queryTwo
+from oracleFuncs import queryOne, queryFour, queryThree, queryTwo, queryFive, getTotalTupleCount
 import math
 
 app = Flask(__name__, static_url_path='',
@@ -14,7 +14,8 @@ def index() -> str:
 
 @app.route('/about')
 def about() -> str:
-    return render_template("about.html")
+    tupleCount = getTotalTupleCount()
+    return render_template("about.html", count=tupleCount)
 
 @app.route('/analyze', methods=['POST', 'GET'])
 def analyze() -> str:
@@ -54,9 +55,42 @@ def analyze() -> str:
         return render_template("analyze.html", value = [1,2,3,4,5,6,7,8,9,10])
 
 
-@app.route('/compare')
+@app.route('/compare', methods=['POST', 'GET'])
 def compare() -> str:
-    return render_template("compare.html")
+    if request.method == 'POST':
+        chartForm = [0, 0, 0, 0, 0, 0]
+        if(request.form.get('exchange-data')):
+            chartForm[0] = request.form.get('exchange-data')
+            chartForm[1] = str(datetime.strptime(request.form.get('start-data'), '%Y-%m-%dT%H:%M'))
+            chartForm[2] = str(datetime.strptime(request.form.get('end-data'), '%Y-%m-%dT%H:%M'))
+            chartForm[3] = []
+            chartForm[4] = []
+            chartForm[5] = []
+            query = queryFive(request.form.get('exchange-data'), datetime.strptime(request.form.get('start-data'), '%Y-%m-%dT%H:%M'), datetime.strptime(request.form.get('end-data'), '%Y-%m-%dT%H:%M'))
+            queryA = query.A
+            queryALength = len(queryA)
+            scaleFactor = math.floor(queryALength / 100)
+            for x in range(queryALength):
+                if(x % scaleFactor == 0):
+                    chartForm[3].append(str(queryA[x]))
+
+            queryB = query.B
+            for z in range(queryALength):
+                if(z % scaleFactor == 0):
+                    chartForm[4].append(queryB[z])
+            queryC = query.C
+            for y in range(queryALength):
+                if(y % scaleFactor == 0):
+                    chartForm[5].append(queryC[y])
+            # print(chartForm)
+
+            return render_template("compare.html", value = chartForm)
+        query = 0;
+        return render_template("compare.html", value = [1,2,3,4,5,6,7,8,9,10])
+    else:
+        a=request.args.get('test')
+        print("no")
+        return render_template("compare.html", value = [1,2,3,4,5,6,7,8,9,10])
 
 @app.route('/market', methods=['POST', 'GET'])
 def market() -> str:

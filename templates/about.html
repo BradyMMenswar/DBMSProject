@@ -7,7 +7,7 @@
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
     <title>Crypto Hindsight</title>
 </head>
-<body class="container">
+<body class="container full-height-grow">
     <div class="bg"></div>
     <header class="main-header">
         <a href="/" class="brand-logo">
@@ -23,5 +23,36 @@
             </ul>
         </nav>
     </header>
+    <section class="about-section">
+        <div class="text-area">
+            <h1>About Crypto Hindsight</h1>
+            
+            <p>
+                This website has been a group collaboration from Group 7 of CIS4301 Spring 2021. We have worked together to build a tool that allows the user to search through a few years worth of historical cryptocurrency data.
+                By connecting the Oracle Database to this application, we are able to run SQL queries to retrieve complex trend information that can be used to make educated decisions about cryptocurrency investments.
+                Multiple aspects of both Ethereum and Bitcoin can be analyzed by the user within the different tabs provided.
+            </p>
+
+        </div>
+        <div class="text-area">
+            <h1>Complex Trend Queries</h1>
+            <ul>
+                <li><span class='query-text'>Query 1:</span> Daily Percentage Change in Price for a Given Crypto.</li>
+                <li><span class='query-text'>Query 2:</span> Portfolio Value Calculator Over Time.</li>
+                <li><span class='query-text'>Query 3:</span> Crypto Performance Compared To Market Over Time.</li>
+                <li><span class='query-text'>Query 4:</span> Trade Volume Of Crypto Over Time.</li>
+                <li><span class='query-text'>Query 5:</span> Correlation Between Different Cryptos Over Time.</li>
+            </ul>
+
+        </div>
+    </section>
+
+    <div class="tuple-count">
+        <h1>Total database tuple count: </h1>
+        <h2 class="num-tuples">{{count}}</h2>
+    </div>
+    <div class="contributors">
+        <h3>Contributors: Brady Menswar, Konstantin Kerekovski, Steven Perez, Shiva Murali</h3>
+    </div>
 </body>
 </html>
