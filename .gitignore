@@ -1,7 +1,10 @@
 *
 instantclient*
 .env
+!*.txt
 !*.sql
 !.gitignore
 !*.py
 !*.md
+!data_import/
+
